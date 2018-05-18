@@ -17,6 +17,8 @@ using namespace ceres;
 //////////////////////////// IO Utils ////////////////////////////////////////
 const static IOFormat CSVFormat(StreamPrecision, DontAlignCols, ", ", "\n");
 
+#define print_output_file_info( msg ) msg;
+
 template <typename Derived>
 void printEigenMatrix(const string& filename, const MatrixBase<Derived>& a)
 {
@@ -24,7 +26,7 @@ void printEigenMatrix(const string& filename, const MatrixBase<Derived>& a)
   if( file.is_open() )
   {
     file << a.format(CSVFormat) << endl;
-    cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n";
+    print_output_file_info(cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n" );
   }
   else
   {
@@ -51,7 +53,7 @@ void printMatrix2d( const string& filename, const double * D, int nRows, int nCo
       }
       file << "\n";
     }
-    cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n";
+    print_output_file_info( cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n" );
   }
   else
   {
@@ -70,7 +72,7 @@ void printMatrix1d( const string& filename, const double * D, int n  )
     for( int i=1 ; i<n ; i++ )
       file << ", " << D[i] ;
     file << "\n";
-    cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n";
+    print_output_file_info(cout << "\033[1;32m" <<"Written to file: "<< filename  << "\033[0m\n");
   }
   else
   {

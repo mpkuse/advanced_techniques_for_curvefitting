@@ -20,7 +20,7 @@ def animate(i):
     print i, len(T_cap)
     xmax = 200
     if i < len(T_cap):
-        Xd_i = np.matmul( T_cap[i][0:3,0:3], w_Xd ) #+ T_cap[i][0:3,3]
+        Xd_i = np.matmul( T_cap[i][0:3,0:3], w_Xd ) + np.expand_dims( T_cap[i][0:3,3], axis=1 )
         print Xd_i.shape
         ax.cla()
         ax.set_title( 'Iteration %d' %(i) )
@@ -32,8 +32,8 @@ def animate(i):
 
 
 # Load point clouds
-w_X =  np.loadtxt( BASE_DIR+'/w_X.txt', delimiter=',' ) #3xN
-w_Xd = np.loadtxt( BASE_DIR+'/w_Xd.txt', delimiter=',' )
+w_X =  np.loadtxt( BASE_DIR+'/w_X.txt', delimiter=',' )[0:3,:] #3xN
+w_Xd = np.loadtxt( BASE_DIR+'/w_Xd.txt', delimiter=',' )[0:3,:]
 
 
 # Load all the intermediate poses
@@ -64,5 +64,3 @@ aim = FuncAnimation( fig, animate, frames=np.arange(0,len(T_cap)) )
 
 plt.draw()
 plt.show()
-
-# code.interact( local=locals() )
