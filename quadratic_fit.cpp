@@ -114,12 +114,12 @@ int main()
   int NQ = M.rows() ;
   for( int i=0 ; i<NQ ; i++ )
   {
-    // CostFunction* cost_function = LeastSquaresResidueQ::Create( M(i,0), M(i,1) );
-    // problem.AddResidualBlock( cost_function, NULL, param );
+    CostFunction* cost_function = LeastSquaresResidueQ::Create( M(i,0), M(i,1) );
+    problem.AddResidualBlock( cost_function, NULL, param );
     // problem.AddResidualBlock( cost_function, new ceres::CauchyLoss(.01), param );
 
-    CostFunction* cost_function = LeastSquaresResidueQSwitchingConstraint::Create( M(i,0), M(i,1) );
-    problem.AddResidualBlock( cost_function, NULL, param, &switches[i] );
+    // CostFunction* cost_function = LeastSquaresResidueQSwitchingConstraint::Create( M(i,0), M(i,1) );
+    // problem.AddResidualBlock( cost_function, NULL, param, &switches[i] );
     // problem.AddResidualBlock( cost_function, new ceres::CauchyLoss(.01), param, &switches[i] );
   }
 
