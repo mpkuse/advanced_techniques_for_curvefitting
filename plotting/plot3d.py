@@ -60,7 +60,7 @@ ax.scatter( w_Xd[0,:],w_Xd[1,:],w_Xd[2,:] , c='g', marker='^' )
 
 
 # Animate
-aim = FuncAnimation( fig, animate, frames=np.arange(0,len(T_cap)) )
+aim = FuncAnimation( fig, animate, frames=np.arange(0,len(T_cap)), repeat = False )
 
 plt.draw()
 plt.show()

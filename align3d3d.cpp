@@ -61,7 +61,7 @@ public:
     residual[0] = s[0] * e(0);
     residual[1] = s[0] * e(1);
     residual[2] = s[0] * e(2);
-    residual[3] = T(10.) * (T(1.0) - s[0]);
+    residual[3] = T(5.) * (T(1.0) - s[0]);
 
     return true;
   }
@@ -211,6 +211,19 @@ void C( MatrixXd& w_Y, MatrixXd& w_Yd )
 
 }
 
+void realA(  MatrixXd& w_X, MatrixXd& w_Xd  )
+{
+    string _1 = "mateigen_86_51___w_X_iprev_triangulated.txt";
+    string _2 = "mateigen_86_51___w_X_icurr_triangulated.txt";
+
+    MatrixXd M, M1;
+    load_pointcloud( "../data3d/"+_1, 4, M );
+    load_pointcloud( "../data3d/"+_2, 4, M1 );
+
+    w_X = M.transpose();
+    w_Xd = M1.transpose();
+}
+
 
 int main()
 {
@@ -218,7 +231,9 @@ int main()
   MatrixXd w_X, w_Xd;
   // A(w_X, w_Xd );
   // B(w_X, w_Xd );
-  C(w_X, w_Xd );
+  // C(w_X, w_Xd );
+
+  realA( w_X, w_Xd );
 
   printEigenMatrix( "w_X.txt", w_X );
   printEigenMatrix( "w_Xd.txt", w_Xd );
@@ -244,6 +259,7 @@ int main()
   //
   // Setup Residue terms
   ceres::Problem problem;
+  cout << "# Residue terms = " << w_X.cols() << endl;
   for( int i=0 ; i<w_X.cols() ; i++ )
   {
     // CostFunction* cost_function = EuclideanDistanceResidue::Create( w_X.col(i).head(3), w_Xd.col(i).head(3) );
@@ -254,7 +270,7 @@ int main()
 
     CostFunction* cost_function = EuclideanDistanceResidueSwitchingConstraint::Create( w_X.col(i).head(3), w_Xd.col(i).head(3) );
     // problem.AddResidualBlock( cost_function, NULL, T_cap_q, T_cap_t, &s[i] );
-    problem.AddResidualBlock( cost_function, new CauchyLoss(.01), T_cap_q, T_cap_t, &s[i] );
+    problem.AddResidualBlock( cost_function, new CauchyLoss(.1), T_cap_q, T_cap_t, &s[i] );
   }
 
   // Local Parameterization (for 6DOF)

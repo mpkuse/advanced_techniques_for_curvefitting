@@ -267,6 +267,13 @@ Matrix3d ypr2R( const Vector3d& ypr)
 
 }
 
+Matrix3d ypr2R( double yy, double pp, double rr )
+{
+    Vector3d ypr;
+    ypr << yy, pp, rr;
+    return ypr2R( ypr );
+}
+
 void printPoseMatrix( const Matrix4d& M )
 {
   cout << "YPR      : " << R2ypr(  M.topLeftCorner<3,3>() ).transpose() << endl;
@@ -308,6 +315,18 @@ void rawyprt_to_eigenmat( const double * ypr, const double * t, Matrix4d& dstT )
   dstT(0,3) = t[0];
   dstT(1,3) = t[1];
   dstT(2,3) = t[2];
+}
+
+Matrix4d rawyprt_to_eigenmat( double yy, double pp, double rr, double tx, double ty, double tz )
+{
+    Matrix4d dstT = Matrix4d::Identity();
+    Vector3d eigen_ypr;
+    eigen_ypr << yy, pp, rr;
+    dstT.topLeftCorner<3,3>() = ypr2R( eigen_ypr );
+    dstT(0,3) = tx;
+    dstT(1,3) = ty;
+    dstT(2,3) = tz;
+    return dstT;
 }
 
 void eigenmat_to_rawyprt( const Matrix4d& T, double * ypr, double * t)

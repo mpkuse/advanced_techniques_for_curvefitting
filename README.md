@@ -33,7 +33,7 @@ I shall explore the following techniques to solve the above problem:
 - L1 norm and linear-programming
 - Use of Switch Variables
 - Use of Dynamic Covariance Scalling
-- BigM trick.
+- BigM trick. See luca carlone's paper on SLAM
 
 
 ## Note
