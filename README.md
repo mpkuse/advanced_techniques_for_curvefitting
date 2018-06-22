@@ -24,7 +24,7 @@ I am attempting to solve 2 problems. This data will have outliers in addition to
 - 1d linear fit (given a Nx2 matrix get equation of a line). 2 parameters.
 - Quadratic fit. Given Nx2 matrix fit a quadratic equation. 3 parameters.
 - SO(3) + R^3 fit. Given two point cloud to estimate the translation and rotation between them.
-  7 parameters (quaternion and 3 translations) but really 6 parameters. 
+  7 parameters (quaternion and 3 translations) but really 6 parameters.
 
 ## Methods
 I shall explore the following techniques to solve the above problem:
@@ -53,4 +53,4 @@ make
 
 ## Result Gallery
 With robust norms, it is possible to identify outliers with switching constraints.
-![Least Square Fitting Quadratic Curve to data with outliers](plotting/file.gif)
+![Align3d3d No Noise Added](gallery/align3d3d_no_noise_added.gif)
