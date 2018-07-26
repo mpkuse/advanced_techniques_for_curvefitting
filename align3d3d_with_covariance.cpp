@@ -156,7 +156,7 @@ void B( MatrixXd& w_X, MatrixXd& w_Xd )
   w_X = MatrixXd( 4, npts );
   w_X <<  M.leftCols(3).transpose(), MatrixXd::Ones(1,npts);
 
-  MatrixXd neta = MatrixXd::Random(w_X.rows(), w_X.cols()) * 0.;
+  MatrixXd neta = MatrixXd::Random(w_X.rows(), w_X.cols()) * 10.;
   Matrix4d T;
   // T << ypr2R( Vector3d(0, 0, 0) ), Vector3d(200,41.6,122), MatrixXd::Zero(1,3), 1.0; // pure translation
   // T << ypr2R( Vector3d(-30, 120, 90) ), Vector3d(0,0,0), MatrixXd::Zero(1,3), 1.0; // pure rotation
@@ -179,7 +179,7 @@ void C( MatrixXd& w_Y, MatrixXd& w_Yd )
   w_X = MatrixXd( 4, npts );
   w_X <<  M.leftCols(3).transpose(), MatrixXd::Ones(1,npts);
 
-  MatrixXd neta = MatrixXd::Random(w_X.rows(), w_X.cols()) * 20;
+  MatrixXd neta = MatrixXd::Random(w_X.rows(), w_X.cols()) * 2;
   Matrix4d T;
   // T << ypr2R( Vector3d(0, 0, 0) ), Vector3d(200,41.6,122), MatrixXd::Zero(1,3), 1.0; // pure translation
   // T << ypr2R( Vector3d(-30, 120, 90) ), Vector3d(0,0,0), MatrixXd::Zero(1,3), 1.0; // pure rotation
@@ -193,7 +193,7 @@ void C( MatrixXd& w_Y, MatrixXd& w_Yd )
 
 
   // Insane points
-  int n_insane_pts = 500;
+  int n_insane_pts = 50;
   MatrixXd w_Z = MatrixXd( 4, n_insane_pts);
   w_Z << MatrixXd::Random( 3, n_insane_pts )*500,  MatrixXd::Ones(1,n_insane_pts);
 
@@ -231,8 +231,8 @@ int main()
 
   MatrixXd w_X, w_Xd;
   // A(w_X, w_Xd );
-  B(w_X, w_Xd );
-  // C(w_X, w_Xd );
+  // B(w_X, w_Xd );
+  C(w_X, w_Xd );
 
   // realA( w_X, w_Xd );
 
@@ -283,6 +283,7 @@ int main()
   // Run
   Solver::Options options;
   options.minimizer_progress_to_stdout = false;
+  options.max_num_iterations = 50;
   Solver::Summary summary;
 
   // CallbackReturnType
@@ -301,5 +302,20 @@ int main()
   printEigenMatrix( T_cap, "T_cap_final" );
   printEigenMatrix( "T_cap_final.txt", T_cap  );
   printMatrix1d( "switches.txt", s, w_X.cols()  );
+
+  //
+  // Get Covariance of the optimization variables
+  ceres::Covariance::Options cov_options;
+  ceres::Covariance cov(cov_options);
+
+  vector< pair< const double *, const double* > > covariance_blocks;
+  covariance_blocks.push_back( std::make_pair(T_cap_t, T_cap_t) );
+
+  cov.Compute( covariance_blocks, &problem );
+
+  double covariance_xx[3*3];
+  cov.GetCovarianceBlock( T_cap_t, T_cap_t, covariance_xx );
+
+  printMatrix2d( covariance_xx, 3,3, "covariance_xx");
 
 }

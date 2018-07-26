@@ -52,5 +52,5 @@ make
 ```
 
 ## Result Gallery
-With robust norms, it is possible to identify outliers with switching constraints.
+Alignment of 2 pointclouds. No noise added.
 ![Align3d3d No Noise Added](gallery/align3d3d_no_noise_added.gif)
