@@ -211,6 +211,82 @@ void load_pointcloud( const string& filename, int number_per_line, MatrixXd& M )
 }
 
 
+
+
+template<typename Out>
+void split(const std::string &s, char delim, Out result) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        *(result++) = item;
+    }
+}
+
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, std::back_inserter(elems));
+    return elems;
+}
+
+void printPoseMatrix( const Matrix4d& M );
+
+// in the test file the matrix is in row major format, and occupies 4 lines per matrix.
+// number of lines in the file need to be a multiple of 4.
+void loadtxt( const string& fname, vector<Matrix4d>& A  )
+{
+    //
+    // Read txt file
+    cout << "Open file: "<< fname << endl;
+    std::ifstream file( fname );
+    vector<string> vec_of_string;
+    string str;
+    int nline=0;
+    while( getline(file, str ) )
+    {
+        // cout << str << endl;
+        nline++;
+        vec_of_string.push_back( str );
+    }
+    cout << "Done reading txt " << nline << endl;
+    assert( nline%4 == 0 );
+
+
+
+    //
+    // Go thru the text file and set Matrix4d s.
+    for( int i=0 ; i<nline ; i+=4 )
+    {
+        Matrix4d M;
+        for( int j=0 ; j<4 ; j++ )
+        {
+            vector<string> splitted_row_j = split( vec_of_string[i+j], ',' );
+            assert( splitted_row_j.size() == 4 );
+
+            M( j, 0 ) = stod( splitted_row_j[0] );
+            M( j, 1 ) = stod( splitted_row_j[1] );
+            M( j, 2 ) = stod( splitted_row_j[2] );
+            M( j, 3 ) = stod( splitted_row_j[3] );
+        }
+        A.push_back( M );
+    }
+
+
+    //
+    //
+    cout << A.size() << " matrixces in the file\n";
+    for( int i=0 ; i<A.size() ; i++ )
+    {
+        cout << fname << "[" << i << "]=\n";
+        printPoseMatrix( A[i] );
+        cout << A[i] << "\n\n";
+
+    }
+
+
+}
+
+
+
 //////////////////////////// END IO Utils ////////////////////////////////////////
 
 
@@ -276,8 +352,8 @@ Matrix3d ypr2R( double yy, double pp, double rr )
 
 void printPoseMatrix( const Matrix4d& M )
 {
-  cout << "YPR      : " << R2ypr(  M.topLeftCorner<3,3>() ).transpose() << endl;
-  cout << "Tx,Ty,Tz : " << M(0,3) << ", " << M(1,3) << ", " << M(2,3) << endl;
+  cout << "\tYPR      : " << R2ypr(  M.topLeftCorner<3,3>() ).transpose() << "  ";
+  cout << "\tTx,Ty,Tz : " << M(0,3) << ", " << M(1,3) << ", " << M(2,3) << endl;
 }
 
 void raw_to_eigenmat( const double * quat, const double * t, Matrix4d& dstT )

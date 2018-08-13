@@ -36,3 +36,7 @@ target_link_libraries( align3d2d  ${CERES_LIBRARIES}  )
 
 add_executable( align3d3d_with_cov align3d3d_with_covariance.cpp )
 target_link_libraries( align3d3d_with_cov  ${CERES_LIBRARIES}  )
+
+
+add_executable( align_with_mocap align_with_mocap.cpp )
+target_link_libraries( align_with_mocap  ${CERES_LIBRARIES}  )
