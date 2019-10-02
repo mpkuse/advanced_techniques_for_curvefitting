@@ -33,7 +33,7 @@ I shall explore the following techniques to solve the above problem:
 - L1 norm and linear-programming
 - Use of Switch Variables
 - Use of Dynamic Covariance Scalling
-- BigM trick. See luca carlone's paper on SLAM
+- BigM trick. See luca carlone's paper on SLAM (L. Carlone and G. Calafiore. Convex Relaxations for Pose Graph Optimization with Outliers. IEEE Robotics and Automation Letters (RA-L), 3(2):1160–1167, 2018) 
 
 
 ## Note
