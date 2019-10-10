@@ -34,6 +34,10 @@ I shall explore the following techniques to solve the above problem:
 - Use of Switch Variables
 - Use of Dynamic Covariance Scalling
 - BigM trick. See luca carlone's paper on SLAM (L. Carlone and G. Calafiore. Convex Relaxations for Pose Graph Optimization with Outliers. IEEE Robotics and Automation Letters (RA-L), 3(2):1160–1167, 2018) 
+- Using the truncated least squares ($f_c = min(x^2, c^2);$, c is a constant. However often this is non-differentiable, there are 2 ways to deal with this
+  - Use, $f_c \approx \frac{x^2}{ (c^2 + x^2) }$ also called  Geman-McClure cost function.
+  - Use, $f_c = \frac{1}{2} (1+\theta) x^2 + \frac{1}{2} (1-\theta) c^2 $, c is a constant and theta is a descrete optimization variable taking the values ${1;-1}$. This paper, https://arxiv.org/pdf/1810.11692.pdf, uses this trick. 
+  - 
 
 
 ## Note
