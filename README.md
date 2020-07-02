@@ -60,4 +60,6 @@ Alignment of 2 pointclouds. No noise added.
 ![Align3d3d No Noise Added](gallery/align3d3d_no_noise_added.gif)
 
 ## Further Examples 
-Have a look at this repo: https://github.com/superjax/ceres_sandbox for more practical and slam related examples with CERES-solver. 
+- Have a look at this repo: https://github.com/superjax/ceres_sandbox for more practical and slam related examples with CERES-solver. 
+
+- This repo does more of SE(3) paramiterization: https://github.com/izhengfan/ba_demo_ceres. Also have a good companion blog post.
